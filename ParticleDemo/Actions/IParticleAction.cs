@@ -1,10 +1,11 @@
 ﻿using System;
+
+
 namespace ParticleDemo.Desktop.Commands
 {
-    public class IParticleCommand
+    public interface IParticleCommand
     {
-        public IParticleCommand()
-        {
-        }
+        Particle Particle { get; set; }
+        void Execute();
     }
 }

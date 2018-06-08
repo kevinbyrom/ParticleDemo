@@ -11,8 +11,8 @@ namespace ParticleDemo.Desktop
     {
         const int ScreenWidth = 1920;
         const int ScreenHeight = 1080;
-        const int NumParticlesX = 40;
-        const int NumParticlesY = 40;
+        const int NumParticlesX = 80;
+        const int NumParticlesY = 80;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -55,7 +55,7 @@ namespace ParticleDemo.Desktop
                     int idx = x + (y * NumParticlesY);
 
                     this.particles[idx] = new Particle();
-                    this.particles[idx].Pos = new Vector2((ScreenWidth / NumParticlesX) * x, (ScreenWidth / NumParticlesY) * y);
+                    this.particles[idx].Anchor = new Vector2((ScreenWidth / NumParticlesX) * x, (ScreenWidth / NumParticlesY) * y);
                     this.particles[idx].SpriteIdx = 0;
                 }
             }
@@ -93,10 +93,26 @@ namespace ParticleDemo.Desktop
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            bool space = Keyboard.GetState().IsKeyDown(Keys.Space);
+
+            for (int y = 0; y < NumParticlesY; y++)
+            {
+                for (int x = 0; x < NumParticlesX; x++)
+                {
+                    int idx = x + (y * NumParticlesY);
+                    var particle = this.particles[idx];
+
+                    if (space)
+                        particle.Wobble();
+                    
+                    particle.Update(gameTime);
+                }
+            }
+
 
             base.Update(gameTime);
         }
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -117,8 +133,9 @@ namespace ParticleDemo.Desktop
                 for (int x = 0; x < NumParticlesX; x++)
                 {
                     int idx = x + (y * NumParticlesY);
+                    var particle = this.particles[idx];
 
-                    this.spriteBatch.Draw(this.spriteTexture, this.particles[idx].Pos, new Rectangle(0, 0, 16, 16), Color.White, 0f, new Vector2(8, 8), 1.0f, SpriteEffects.None, 1.0f);
+                    this.spriteBatch.Draw(this.spriteTexture, particle.Pos, new Rectangle(0, 0, 16, 16), Color.White, 0f, new Vector2(8, 8), 1.0f, SpriteEffects.None, 1.0f);
                 }
             }
 
