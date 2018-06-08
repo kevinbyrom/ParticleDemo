@@ -55,7 +55,7 @@ namespace ParticleDemo.Desktop
                     int idx = x + (y * NumParticlesY);
 
                     this.particles[idx] = new Particle();
-                    this.particles[idx].Anchor = new Vector2((ScreenWidth / NumParticlesX) * x, (ScreenWidth / NumParticlesY) * y);
+                    this.particles[idx].AnchorAt(new Vector2((ScreenWidth / NumParticlesX) * x, (ScreenWidth / NumParticlesY) * y));
                     this.particles[idx].SpriteIdx = 0;
                 }
             }
