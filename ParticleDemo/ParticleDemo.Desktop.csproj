@@ -30,8 +30,12 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Particle.cs" />
-    <Compile Include="Actions\IParticleAction.cs" />
+    <Compile Include="Actions\IGameAction.cs" />
     <Compile Include="Actions\Particle\WobbleParticleAction.cs" />
+    <Compile Include="Actions\World\ShockwaveAction.cs" />
+    <Compile Include="Actions\ParticleActionBase.cs" />
+    <Compile Include="Actions\WorldActionBase.cs" />
+    <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

@@ -1,5 +1,7 @@
 ﻿using System;
-namespace ParticleDemo.Desktop.Commands
+
+
+namespace ParticleDemo.Desktop
 {
     public class WobbleCommand
     {

@@ -40,5 +40,10 @@ namespace ParticleDemo.Desktop
         {
             this.Velocity = new Vector2(5, 0);
         }
+
+        public void ApplyForce(Vector2 force)
+        {
+            this.Velocity += force;
+        }
     }
 }

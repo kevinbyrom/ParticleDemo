@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ParticleDemo.Desktop.Actions;
+
 
 namespace ParticleDemo.Desktop
 {
@@ -9,15 +11,15 @@ namespace ParticleDemo.Desktop
     /// </summary>
     public class Game1 : Game
     {
-        const int ScreenWidth = 1920;
-        const int ScreenHeight = 1080;
-        const int NumParticlesX = 80;
-        const int NumParticlesY = 80;
+        const int ScreenWidth = 1000;
+        const int ScreenHeight = 700;
+        const int NumParticlesX = 40;
+        const int NumParticlesY = 20;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Particle[] particles;
         Texture2D spriteTexture;
+        World world;
 
 
         public Game1()
@@ -46,19 +48,8 @@ namespace ParticleDemo.Desktop
 
             // Initialize the particles
 
-            this.particles = new Particle[NumParticlesX * NumParticlesY];
-
-            for (int y = 0; y < NumParticlesY; y++)
-            {
-                for (int x = 0; x < NumParticlesX; x++)
-                {
-                    int idx = x + (y * NumParticlesY);
-
-                    this.particles[idx] = new Particle();
-                    this.particles[idx].AnchorAt(new Vector2((ScreenWidth / NumParticlesX) * x, (ScreenWidth / NumParticlesY) * y));
-                    this.particles[idx].SpriteIdx = 0;
-                }
-            }
+            this.world = new World();
+            this.world.Initialize(ScreenWidth, ScreenHeight, NumParticlesX, NumParticlesY);
         }
 
         /// <summary>
@@ -95,20 +86,11 @@ namespace ParticleDemo.Desktop
 
             bool space = Keyboard.GetState().IsKeyDown(Keys.Space);
 
-            for (int y = 0; y < NumParticlesY; y++)
-            {
-                for (int x = 0; x < NumParticlesX; x++)
-                {
-                    int idx = x + (y * NumParticlesY);
-                    var particle = this.particles[idx];
-
-                    if (space)
-                        particle.Wobble();
-                    
-                    particle.Update(gameTime);
-                }
-            }
-
+            if (space)
+                this.world.Shockwave();
+            
+            foreach (var particle in this.world.Particles)
+                particle.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -128,16 +110,8 @@ namespace ParticleDemo.Desktop
 
             this.spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
    
-            for (int y = 0; y < NumParticlesY; y++)
-            {
-                for (int x = 0; x < NumParticlesX; x++)
-                {
-                    int idx = x + (y * NumParticlesY);
-                    var particle = this.particles[idx];
-
-                    this.spriteBatch.Draw(this.spriteTexture, particle.Pos, new Rectangle(0, 0, 16, 16), Color.White, 0f, new Vector2(8, 8), 1.0f, SpriteEffects.None, 1.0f);
-                }
-            }
+            foreach (var particle in this.world.Particles)
+                this.spriteBatch.Draw(this.spriteTexture, particle.Pos, new Rectangle(0, 0, 16, 16), Color.White, 0f, new Vector2(8, 8), 1.0f, SpriteEffects.None, 1.0f);
 
             this.spriteBatch.End();
         }
